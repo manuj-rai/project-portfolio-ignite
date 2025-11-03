@@ -12,11 +12,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import ProjectModal from "./ProjectModal";
 
 const Projects = () => {
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -121,7 +124,13 @@ const Projects = () => {
               <CarouselContent>
                 {filteredProjects?.map((project) => (
                   <CarouselItem key={project.id}>
-                    <Card className="p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group">
+                    <Card 
+                      className="p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group cursor-pointer"
+                      onClick={() => {
+                        setSelectedProject(project);
+                        setModalOpen(true);
+                      }}
+                    >
                       <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg mb-4 overflow-hidden">
                         {project.image_url && (
                           <img
@@ -133,17 +142,20 @@ const Projects = () => {
                       </div>
 
                       <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                      <p className="text-muted-foreground mb-4">{project.description}</p>
+                      <p className="text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
 
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies?.map((tech) => (
+                        {project.technologies?.slice(0, 3).map((tech) => (
                           <Badge key={tech} variant="secondary">
                             {tech}
                           </Badge>
                         ))}
+                        {project.technologies?.length > 3 && (
+                          <Badge variant="secondary">+{project.technologies.length - 3}</Badge>
+                        )}
                       </div>
 
-                      <div className="flex gap-3">
+                      <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
                         {project.project_url && (
                           <a
                             href={project.project_url}
@@ -152,7 +164,7 @@ const Projects = () => {
                             className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
                           >
                             <ExternalLink className="h-4 w-4" />
-                            Live Demo
+                            Demo
                           </a>
                         )}
                         {project.github_url && (
@@ -184,11 +196,15 @@ const Projects = () => {
                 ref={(el) => {
                   if (el && !visibleCards[index]) cardRefs.current[index] = el;
                 }}
-                className={`p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group ${
+                className={`p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group cursor-pointer ${
                   visibleCards[index] ? "animate-fade-in-up" : "opacity-0"
                 }`}
                 style={{
                   animationDelay: `${(index % 3) * 100}ms`,
+                }}
+                onClick={() => {
+                  setSelectedProject(project);
+                  setModalOpen(true);
                 }}
               >
                 <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg mb-4 overflow-hidden">
@@ -202,17 +218,20 @@ const Projects = () => {
                 </div>
 
                 <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className="text-muted-foreground mb-4">{project.description}</p>
+                <p className="text-muted-foreground mb-4 line-clamp-2">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies?.map((tech) => (
+                  {project.technologies?.slice(0, 3).map((tech) => (
                     <Badge key={tech} variant="secondary">
                       {tech}
                     </Badge>
                   ))}
+                  {project.technologies?.length > 3 && (
+                    <Badge variant="secondary">+{project.technologies.length - 3}</Badge>
+                  )}
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
                   {project.project_url && (
                     <a
                       href={project.project_url}
@@ -221,7 +240,7 @@ const Projects = () => {
                       className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      Live Demo
+                      Demo
                     </a>
                   )}
                   {project.github_url && (
@@ -241,6 +260,12 @@ const Projects = () => {
           </div>
         </div>
       </div>
+      
+      <ProjectModal
+        project={selectedProject}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+      />
     </section>
   );
 };

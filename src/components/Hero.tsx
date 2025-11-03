@@ -1,9 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
-
+import { useState, useEffect } from "react";
 
 const Hero = () => {
+  const [typedText, setTypedText] = useState("");
+  const fullText = "Full-Stack Developer & Creative Problem Solver";
+  
+  useEffect(() => {
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setTypedText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50);
+    
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -27,8 +44,9 @@ const Hero = () => {
             <span className="text-primary font-medium">Available for Freelance Projects</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-            Full-Stack Developer &<br />Creative Problem Solver
+          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70 min-h-[180px] md:min-h-[240px]">
+            {typedText}
+            <span className="animate-pulse">|</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
