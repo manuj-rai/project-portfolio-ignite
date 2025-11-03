@@ -1,6 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Code2, Palette, Rocket, Search, ShoppingCart, Smartphone } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const services = [
   {
@@ -43,21 +50,32 @@ const services = [
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = cardRefs.current.findIndex((ref) => ref === entry.target);
+            if (index !== -1) {
+              setVisibleCards((prev) => {
+                const updated = [...prev];
+                updated[index] = true;
+                return updated;
+              });
+            }
+          }
+        });
       },
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
+    cardRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -73,26 +91,68 @@ const Services = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Mobile Carousel */}
+          <div className="md:hidden">
+            <Carousel className="w-full max-w-xs mx-auto">
+              <CarouselContent>
+                {services.map((service) => {
+                  const Icon = service.icon;
+                  return (
+                    <CarouselItem key={service.title}>
+                      <Card className="p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group h-full">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                          <Icon className="h-6 w-6 text-primary-foreground" />
+                        </div>
+                        
+                        <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                        <p className="text-muted-foreground mb-4">{service.description}</p>
+                        
+                        <ul className="space-y-2">
+                          {service.features.map((feature) => (
+                            <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2">
+                              <span className="text-primary mt-1">•</span>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </Card>
+                    </CarouselItem>
+                  );
+                })}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+
+          {/* Desktop Grid */}
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
                 <Card
-                  key={index}
-                  className={`p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(96,165,250,0.15)] group ${
-                    isVisible ? "animate-fade-in-up" : "opacity-0"
+                  key={service.title}
+                  ref={(el) => {
+                    if (el && !visibleCards[index]) cardRefs.current[index] = el;
+                  }}
+                  className={`p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group ${
+                    visibleCards[index] ? "animate-fade-in-up" : "opacity-0"
                   }`}
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{
+                    animationDelay: `${(index % 3) * 100}ms`,
+                  }}
                 >
-                  <div className="mb-4 w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="h-6 w-6 text-primary-foreground" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                  
+                  <h3 className="text-xl font-bold mb-3">{service.title}</h3>
                   <p className="text-muted-foreground mb-4">{service.description}</p>
+                  
                   <ul className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="text-sm flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                    {service.features.map((feature) => (
+                      <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2">
+                        <span className="text-primary mt-1">•</span>
                         {feature}
                       </li>
                     ))}

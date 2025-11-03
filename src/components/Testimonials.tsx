@@ -2,6 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Testimonials = () => {
   const { data: testimonials, isLoading } = useQuery({
@@ -32,7 +39,43 @@ const Testimonials = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Mobile Carousel */}
+          <div className="md:hidden">
+            <Carousel className="w-full max-w-xs mx-auto">
+              <CarouselContent>
+                {testimonials?.map((testimonial) => (
+                  <CarouselItem key={testimonial.id}>
+                    <Card className="p-6 bg-card/50 backdrop-blur border-border">
+                      <div className="flex gap-1 mb-4">
+                        {[...Array(testimonial.rating || 5)].map((_, i) => (
+                          <Star key={i} className="h-5 w-5 fill-accent text-accent" />
+                        ))}
+                      </div>
+                      
+                      <p className="text-foreground mb-6 italic">"{testimonial.content}"</p>
+                      
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold">
+                          {testimonial.client_name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="font-semibold">{testimonial.client_name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {testimonial.role}{testimonial.company && ` at ${testimonial.company}`}
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+
+          {/* Desktop Grid */}
+          <div className="hidden md:grid grid-cols-3 gap-8">
             {testimonials?.map((testimonial) => (
               <Card 
                 key={testimonial.id}
