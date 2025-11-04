@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { Home, User, Briefcase, Mail, FolderOpen } from "lucide-react";
+import { Home, User, Briefcase, Mail, FolderOpen, Shield } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,6 +118,15 @@ const Navigation = () => {
                   </button>
                 );
               })}
+              {isAdmin && (
+                <button
+                  onClick={() => navigate("/admin")}
+                  className="flex items-center gap-2 text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  <Shield className="h-4 w-4" />
+                  Admin
+                </button>
+              )}
             </div>
           </div>
         </div>

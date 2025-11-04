@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
-import { Code2, Palette, Rocket, Search, ShoppingCart, Smartphone } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -9,52 +11,37 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const services = [
-  {
-    icon: Code2,
-    title: "Web Development",
-    description: "Custom websites and web applications built with modern frameworks like React, Next.js, and TypeScript.",
-    features: ["Responsive Design", "Performance Optimization", "SEO-Friendly"],
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile Development",
-    description: "Cross-platform mobile applications using React Native for iOS and Android platforms.",
-    features: ["Native Performance", "Cross-Platform", "App Store Ready"],
-  },
-  {
-    icon: ShoppingCart,
-    title: "E-Commerce Solutions",
-    description: "Full-featured online stores with payment integration, inventory management, and analytics.",
-    features: ["Payment Gateway", "Inventory System", "Analytics Dashboard"],
-  },
-  {
-    icon: Palette,
-    title: "UI/UX Design",
-    description: "Beautiful, intuitive interfaces that provide exceptional user experiences across all devices.",
-    features: ["User Research", "Prototyping", "Design Systems"],
-  },
-  {
-    icon: Rocket,
-    title: "API Development",
-    description: "RESTful and GraphQL APIs with proper authentication, documentation, and scalability.",
-    features: ["REST & GraphQL", "Authentication", "Documentation"],
-  },
-  {
-    icon: Search,
-    title: "SEO & Performance",
-    description: "Optimize your website for search engines and ensure lightning-fast load times.",
-    features: ["SEO Audit", "Speed Optimization", "Core Web Vitals"],
-  },
-];
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string | null;
+  features: string[];
+  display_order: number;
+  published: boolean;
+}
 
 const Services = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  const { data: services, isLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .eq("published", true)
+        .order("display_order");
+      if (error) throw error;
+      return data as Service[];
+    },
+  });
+
   useEffect(() => {
+    if (!services) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -78,7 +65,26 @@ const Services = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [services]);
+
+  const getIcon = (iconName: string | null) => {
+    if (!iconName) return LucideIcons.Code2;
+    const Icon = (LucideIcons as any)[iconName];
+    return Icon || LucideIcons.Code2;
+  };
+
+  if (isLoading || !services) {
+    return (
+      <section id="services" className="py-20 bg-background">
+        <div className="container px-4">
+          <div className="text-center">
+            <p className="text-muted-foreground">Loading services...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
 
   return (
     <section id="services" ref={sectionRef} className="py-20 bg-background">
@@ -96,9 +102,9 @@ const Services = () => {
             <Carousel className="w-full max-w-xs mx-auto">
               <CarouselContent>
                 {services.map((service) => {
-                  const Icon = service.icon;
+                  const Icon = getIcon(service.icon);
                   return (
-                    <CarouselItem key={service.title}>
+                    <CarouselItem key={service.id}>
                       <Card className="p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group h-full">
                         <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                           <Icon className="h-6 w-6 text-primary-foreground" />
@@ -128,10 +134,10 @@ const Services = () => {
           {/* Desktop Grid */}
           <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => {
-              const Icon = service.icon;
+              const Icon = getIcon(service.icon);
               return (
                 <Card
-                  key={service.title}
+                  key={service.id}
                   ref={(el) => {
                     if (el && !visibleCards[index]) cardRefs.current[index] = el;
                   }}
