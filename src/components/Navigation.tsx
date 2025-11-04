@@ -1,22 +1,36 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Home, User, Briefcase, Mail, FolderOpen } from "lucide-react";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+
+      // Update active section based on scroll position
+      const sections = ["hero", "about", "services", "projects", "contact"];
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
     };
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setIsMobileMenuOpen(false);
+    setActiveSection(id);
   };
 
   const navLinks = [
@@ -29,11 +43,47 @@ const Navigation = () => {
 
   return (
     <>
+      {/* Mobile Bottom Navigation - Instagram Style (Mobile First) */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border shadow-lg md:hidden">
+        <div className="flex items-center justify-around h-16 px-1">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            const isActive = activeSection === link.href;
+            return (
+              <button
+                key={link.href}
+                onClick={() => scrollToSection(link.href)}
+                className="flex flex-col items-center justify-center gap-1 p-2 flex-1 transition-all duration-200 relative group"
+              >
+                <Icon 
+                  className={`h-6 w-6 transition-all duration-200 ${
+                    isActive 
+                      ? "text-primary scale-110" 
+                      : "text-muted-foreground group-active:scale-95"
+                  }`}
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+                <span 
+                  className={`text-[10px] font-medium transition-all duration-200 ${
+                    isActive ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {link.label}
+                </span>
+                {isActive && (
+                  <div className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-12 h-[3px] bg-primary rounded-full" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
       {/* Desktop Navigation */}
       <nav
         className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-background/95 backdrop-blur-lg border-b border-border shadow-lg"
+            ? "bg-card/95 backdrop-blur-lg border-b border-border shadow-lg"
             : "bg-transparent"
         }`}
       >
@@ -41,42 +91,31 @@ const Navigation = () => {
           <div className="flex items-center justify-between h-20">
             <button
               onClick={() => scrollToSection("hero")}
-              className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent hover:scale-105 transition-transform"
             >
               Portfolio
             </button>
 
             <div className="flex items-center gap-8">
-              {navLinks.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="text-foreground/80 hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href;
+                return (
+                  <button
+                    key={link.href}
+                    onClick={() => scrollToSection(link.href)}
+                    className={`relative transition-colors ${
+                      isActive ? "text-primary" : "text-foreground/70 hover:text-foreground"
+                    }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <div className="absolute -bottom-2 left-0 right-0 h-[2px] bg-primary rounded-full" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
-        </div>
-      </nav>
-
-      {/* Mobile Bottom Navigation - Instagram Style */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-t border-border">
-        <div className="flex items-center justify-around h-16 px-2">
-          {navLinks.map((link) => {
-            const Icon = link.icon;
-            return (
-              <button
-                key={link.href}
-                onClick={() => scrollToSection(link.href)}
-                className="flex flex-col items-center justify-center gap-1 p-2 flex-1 transition-colors hover:text-primary"
-              >
-                <Icon className="h-6 w-6" />
-                <span className="text-xs">{link.label}</span>
-              </button>
-            );
-          })}
         </div>
       </nav>
     </>
