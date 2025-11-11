@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Home, User, Briefcase, Mail, FolderOpen, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -100,14 +101,14 @@ const Navigation = () => {
               Portfolio
             </button>
 
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-6">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href;
                 return (
                   <button
                     key={link.href}
                     onClick={() => scrollToSection(link.href)}
-                    className={`relative transition-colors ${
+                    className={`relative transition-colors font-medium ${
                       isActive ? "text-primary" : "text-foreground/70 hover:text-foreground"
                     }`}
                   >
@@ -118,6 +119,9 @@ const Navigation = () => {
                   </button>
                 );
               })}
+              
+              <ThemeToggle />
+              
               {isAdmin && (
                 <button
                   onClick={() => navigate("/admin")}
