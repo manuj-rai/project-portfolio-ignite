@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Award, Briefcase, Coffee, Users } from "lucide-react";
+import { Award, Briefcase, Coffee, Users, Code2, Sparkles } from "lucide-react";
 
 const stats = [
-  { icon: Briefcase, value: "50+", label: "Projects Completed" },
-  { icon: Users, value: "30+", label: "Happy Clients" },
-  { icon: Award, value: "5+", label: "Years Experience" },
-  { icon: Coffee, value: "1000+", label: "Cups of Coffee" },
+  { icon: Briefcase, value: "50+", label: "Projects" },
+  { icon: Users, value: "30+", label: "Clients" },
+  { icon: Award, value: "5+", label: "Years" },
+  { icon: Coffee, value: "∞", label: "Coffee" },
 ];
 
 const About = () => {
@@ -31,35 +31,49 @@ const About = () => {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-20 bg-gradient-to-b from-background to-card/30">
-      <div className="container px-4">
+    <section id="about" ref={sectionRef} className="py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-50" />
+      
+      <div className="container px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+          {/* Header */}
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 mb-6">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">About Me</span>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-black mb-6">
+              Building Digital
+              <span className="block text-primary">Experiences</span>
+            </h2>
+          </div>
+
+          {/* Content Grid */}
+          <div className="grid md:grid-cols-2 gap-16 items-center mb-20">
             {/* Text Content */}
             <div className={`space-y-6 ${isVisible ? "animate-slide-in-left" : "opacity-0"}`}>
-              <h2 className="text-4xl md:text-5xl font-bold">About Me</h2>
-              <div className="space-y-4 text-lg text-muted-foreground">
+              <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  I'm a passionate full-stack developer with over 5 years of experience building
-                  web applications that make a difference. My journey in tech started with a
-                  curiosity for problem-solving and has evolved into a career I love.
+                  I'm a <span className="text-foreground font-semibold">passionate developer</span> with 5+ years crafting web experiences that combine beautiful design with powerful functionality.
                 </p>
                 <p>
-                  I specialize in creating scalable, user-friendly applications using modern
-                  technologies. From concept to deployment, I bring ideas to life with clean code
-                  and thoughtful design.
+                  My expertise spans the <span className="text-foreground font-semibold">full stack</span> - from pixel-perfect frontends to robust backend systems. I believe in writing clean, maintainable code that scales.
                 </p>
                 <p>
-                  When I'm not coding, you'll find me exploring new technologies, contributing to
-                  open-source projects, or sharing knowledge with the developer community.
+                  When I'm not coding, I'm exploring emerging technologies and contributing to open-source projects.
                 </p>
               </div>
             </div>
 
-            {/* Image Placeholder */}
+            {/* Visual Element */}
             <div className={`${isVisible ? "animate-fade-in-up" : "opacity-0"}`}>
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 border-2 border-primary/20 flex items-center justify-center overflow-hidden">
-                <div className="text-9xl font-bold text-primary/30">DEV</div>
+              <div className="relative aspect-square">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/50 to-accent rounded-3xl" />
+                <div className="absolute inset-4 bg-background rounded-2xl flex items-center justify-center">
+                  <Code2 className="w-32 h-32 text-primary" strokeWidth={1} />
+                </div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl" />
+                <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-accent/20 rounded-full blur-2xl" />
               </div>
             </div>
           </div>
@@ -71,14 +85,15 @@ const About = () => {
               return (
                 <Card
                   key={index}
-                  className={`p-6 text-center bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 ${
+                  className={`relative overflow-hidden p-8 text-center bg-card border-border hover:border-primary/50 transition-all duration-300 group ${
                     isVisible ? "animate-fade-in-up" : "opacity-0"
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Icon className="h-8 w-8 mx-auto mb-3 text-primary" />
-                  <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Icon className="h-10 w-10 mx-auto mb-4 text-primary" strokeWidth={1.5} />
+                  <div className="text-4xl font-black mb-2 text-foreground">{stat.value}</div>
+                  <div className="text-sm text-muted-foreground font-medium uppercase tracking-wider">{stat.label}</div>
                 </Card>
               );
             })}

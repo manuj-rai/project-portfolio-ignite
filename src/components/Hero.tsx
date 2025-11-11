@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import { ArrowRight, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Hero = () => {
   const [typedText, setTypedText] = useState("");
-  const fullText = "Full-Stack Developer & Creative Problem Solver";
+  const fullText = "Full-Stack Developer";
   
   useEffect(() => {
     let currentIndex = 0;
@@ -16,7 +15,7 @@ const Hero = () => {
       } else {
         clearInterval(interval);
       }
-    }, 50);
+    }, 100);
     
     return () => clearInterval(interval);
   }, []);
@@ -26,84 +25,86 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Background with overlay */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={heroBg} 
-          alt="" 
-          className="w-full h-full object-cover opacity-30"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/80" />
-      </div>
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/5" />
+      
+      {/* Animated Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_110%)] opacity-20" />
 
       {/* Content */}
-      <div className="container relative z-10 px-4 py-20">
-        <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in duration-1000">
-          <div className="inline-block px-4 py-2 bg-primary/10 rounded-full border border-primary/20 mb-4">
-            <span className="text-primary font-medium">Available for Freelance Projects</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70 min-h-[180px] md:min-h-[240px]">
-            {typedText}
-            <span className="animate-pulse">|</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-            I craft exceptional digital experiences through clean code and thoughtful design.
-            Let's build something amazing together.
-          </p>
+      <div className="container relative z-10 px-4 py-32">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col items-center text-center space-y-8">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-sm">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Available for Projects</span>
+            </div>
+            
+            {/* Main Heading */}
+            <div className="space-y-4">
+              <h1 className="text-6xl md:text-8xl font-black tracking-tight">
+                <span className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">
+                  {typedText}
+                </span>
+                <span className="animate-pulse text-primary">|</span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-light">
+                Crafting digital experiences with clean code and modern design
+              </p>
+            </div>
 
-          <div className="flex flex-wrap gap-4 justify-center pt-4">
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
-              onClick={() => scrollToSection("contact")}
-            >
-              Get In Touch <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline"
-              onClick={() => scrollToSection("projects")}
-            >
-              View My Work
-            </Button>
-          </div>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Button 
+                size="lg" 
+                className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg font-semibold"
+                onClick={() => scrollToSection("contact")}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Let's Talk
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Button>
+              
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="px-8 py-6 text-lg font-semibold border-2"
+                onClick={() => scrollToSection("projects")}
+              >
+                View Work
+              </Button>
+            </div>
 
-          {/* Social Links */}
-          <div className="flex gap-4 justify-center pt-8">
-            <a 
-              href="https://github.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-card hover:bg-primary/10 border border-border hover:border-primary transition-all"
-            >
-              <Github className="h-6 w-6" />
-            </a>
-            <a 
-              href="https://linkedin.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-3 rounded-full bg-card hover:bg-primary/10 border border-border hover:border-primary transition-all"
-            >
-              <Linkedin className="h-6 w-6" />
-            </a>
-            <a 
-              href="mailto:contact@example.com"
-              className="p-3 rounded-full bg-card hover:bg-primary/10 border border-border hover:border-primary transition-all"
-            >
-              <Mail className="h-6 w-6" />
-            </a>
+            {/* Social Links */}
+            <div className="flex gap-4 pt-8">
+              {[
+                { icon: Github, href: "https://github.com", label: "GitHub" },
+                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                { icon: Mail, href: "mailto:contact@example.com", label: "Email" }
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 rounded-full border border-border hover:border-primary bg-card hover:bg-primary/10 flex items-center justify-center transition-all hover:scale-110"
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-primary/50 flex items-start justify-center p-2">
-          <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-        </div>
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <div className="w-[2px] h-12 bg-gradient-to-b from-transparent via-primary to-transparent" />
       </div>
     </section>
   );
