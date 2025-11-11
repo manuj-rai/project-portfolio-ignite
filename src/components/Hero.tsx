@@ -1,211 +1,193 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github, Linkedin, Mail, Sparkles, ChevronDown } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { ArrowRight, Github, Linkedin, Mail, Play } from "lucide-react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const Hero = () => {
-  const [typedText, setTypedText] = useState("");
-  const [currentRole, setCurrentRole] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const heroRef = useRef<HTMLElement>(null);
-  
-  const roles = [
-    "Full-Stack Developer",
-    "UI/UX Enthusiast", 
-    "Problem Solver",
-    "Tech Innovator"
-  ];
 
   useEffect(() => {
     setIsVisible(true);
-    
-    // Typewriter effect
-    let currentIndex = 0;
-    const currentText = roles[currentRole];
-    const typeInterval = setInterval(() => {
-      if (currentIndex <= currentText.length) {
-        setTypedText(currentText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typeInterval);
-        // Wait then start deleting
-        setTimeout(() => {
-          deleteText();
-        }, 2000);
-      }
-    }, 100);
-
-    return () => clearInterval(typeInterval);
-  }, [currentRole]);
-
-  const deleteText = () => {
-    let currentIndex = typedText.length;
-    const deleteInterval = setInterval(() => {
-      if (currentIndex >= 0) {
-        setTypedText(roles[currentRole].slice(0, currentIndex));
-        currentIndex--;
-      } else {
-        clearInterval(deleteInterval);
-        // Move to next role
-        setCurrentRole((prev) => (prev + 1) % roles.length);
-      }
-    }, 50);
-  };
+  }, []);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section 
-      ref={heroRef}
-      id="hero" 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background"
-    >
-      {/* Enhanced Animated Background */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      {/* Modern Geometric Background */}
       <div className="absolute inset-0">
-        {/* Gradient Mesh */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(var(--primary)/0.15),transparent)]" />
+        {/* Primary Gradient Blobs */}
+        <div className="absolute top-1/4 -left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
         
-        {/* Animated Grid - More subtle on mobile */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border)/0.1)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border)/0.1)_1px,transparent_1px)] bg-[size:3rem_3rem] md:bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-        
-        {/* Floating Particles */}
-        <div className="absolute inset-0 opacity-30">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-primary rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 20}s`,
-                animationDuration: `${20 + Math.random() * 20}s`,
-              }}
-            />
-          ))}
-        </div>
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_95%,hsl(var(--border)/0.03)_95%),linear-gradient(to_bottom,transparent_95%,hsl(var(--border)/0.03)_95%)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,black_30%,transparent_100%)]" />
       </div>
 
-      {/* Content */}
-      <div className="container relative z-10 px-6 md:px-4 py-20 md:py-32">
-        <div className="max-w-4xl mx-auto">
-          <div className={cn(
-            "flex flex-col items-center text-center space-y-8 md:space-y-12 transition-all duration-700 transform",
-            isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
-          )}>
-            {/* Enhanced Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-primary/30 bg-primary/5 backdrop-blur-xl shadow-lg hover:shadow-primary/10 transition-all duration-300 hover:scale-105">
-              <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-              <span className="text-sm font-medium text-primary bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Available for Projects
-              </span>
-            </div>
-            
-            {/* Enhanced Main Heading */}
-            <div className="space-y-6 md:space-y-8">
-              {/* Welcome Text */}
-              <div className="space-y-2">
-                <p className="text-lg md:text-xl text-primary font-medium tracking-wide">
-                  Hi, I'm John Doe 👋
-                </p>
-                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-tight">
-                  <span className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text text-transparent">
-                    {typedText}
-                  </span>
-                  <span className="animate-pulse text-primary ml-1">|</span>
-                </h1>
-              </div>
-              
-              <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed px-4">
-                Crafting <span className="text-primary font-medium">digital experiences</span> with clean code, 
-                modern design, and user-focused solutions
-              </p>
-            </div>
-
-            {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <Button 
-                size="lg" 
-                className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[140px]"
-                onClick={() => scrollToSection("contact")}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 group-hover:animate-shine" />
-                <span className="relative z-10 flex items-center gap-2">
-                  Let's Talk
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+      {/* Main Content */}
+      <div className="container relative z-10 px-6 py-20">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Text Content */}
+            <div className={cn(
+              "space-y-8 transition-all duration-700",
+              isVisible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
+            )}>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-background/80 backdrop-blur-md border border-border shadow-lg">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-sm font-semibold text-foreground">
+                  Available for new projects
                 </span>
-              </Button>
-              
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="px-8 py-6 text-base font-semibold border-2 bg-background/50 backdrop-blur-sm hover:bg-accent hover:scale-105 transition-all duration-300 min-w-[140px]"
-                onClick={() => scrollToSection("projects")}
-              >
-                View Work
-              </Button>
+              </div>
+
+              {/* Main Headline */}
+              <div className="space-y-6">
+                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-none">
+                  <span className="block text-foreground">Creating</span>
+                  <span className="block bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                    Digital
+                  </span>
+                  <span className="block text-foreground">Experiences</span>
+                </h1>
+                
+                <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
+                  I design and build modern web applications with focus on performance, 
+                  accessibility, and beautiful user interfaces.
+                </p>
+              </div>
+
+              {/* Stats */}
+              <div className="flex gap-8">
+                {[
+                  { value: "2+", label: "Years" },
+                  { value: "50+", label: "Projects" },
+                  { value: "100%", label: "Satisfaction" }
+                ].map((stat, index) => (
+                  <div key={stat.label} className="text-center">
+                    <div className="text-2xl font-bold text-primary">{stat.value}</div>
+                    <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button 
+                  size="lg"
+                  className="group relative bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  onClick={() => scrollToSection("contact")}
+                >
+                  <span className="flex items-center gap-3">
+                    Start a Project
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Button>
+                
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="px-8 py-6 text-lg font-semibold rounded-2xl border-2 bg-background/50 backdrop-blur-sm hover:bg-accent hover:scale-105 transition-all duration-300"
+                  onClick={() => scrollToSection("projects")}
+                >
+                  <span className="flex items-center gap-3">
+                    View Work
+                    <Play className="w-4 h-4" />
+                  </span>
+                </Button>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex gap-4 pt-6">
+                {[
+                  { icon: Github, href: "https://github.com", label: "GitHub" },
+                  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                  { icon: Mail, href: "mailto:contact@example.com", label: "Email" }
+                ].map((social, index) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "w-14 h-14 rounded-2xl border border-border bg-background/60 backdrop-blur-sm hover:bg-primary/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-primary shadow-sm",
+                      "transform transition-all duration-500"
+                    )}
+                    style={{ animationDelay: `${600 + index * 100}ms` }}
+                    aria-label={social.label}
+                  >
+                    <social.icon className="w-6 h-6" />
+                  </a>
+                ))}
+              </div>
             </div>
 
-            {/* Enhanced Social Links */}
-            <div className="flex gap-4 pt-6 md:pt-8">
-              {[
-                { icon: Github, href: "https://github.com", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:contact@example.com", label: "Email" }
-              ].map((social, index) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "w-12 h-12 rounded-xl border border-border hover:border-primary bg-card/50 backdrop-blur-sm hover:bg-primary/10 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm hover:shadow-md",
-                    "transform transition-all duration-500",
-                    isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                  )}
-                  style={{ transitionDelay: `${600 + index * 100}ms` }}
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
+            {/* Visual Content */}
+            <div className={cn(
+              "relative transition-all duration-700",
+              isVisible ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"
+            )}>
+              {/* Main Card */}
+              <div className="relative bg-gradient-to-br from-background to-accent/30 rounded-3xl border border-border p-8 shadow-2xl backdrop-blur-sm">
+                {/* Floating Elements */}
+                <div className="absolute -top-4 -right-4 w-20 h-20 bg-primary rounded-2xl rotate-12 shadow-lg" />
+                <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-500 rounded-2xl -rotate-12 shadow-lg" />
+                
+                {/* Content Inside Card */}
+                <div className="relative z-10 space-y-6">
+                  {/* Profile */}
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-primary to-blue-600 rounded-2xl" />
+                    <div>
+                      <div className="font-bold text-lg">John Doe</div>
+                      <div className="text-sm text-muted-foreground">Full-Stack Developer</div>
+                    </div>
+                  </div>
 
-            {/* Stats Bar */}
-            <div className="grid grid-cols-3 gap-6 md:gap-12 pt-8 md:pt-12 w-full max-w-2xl">
-              {[
-                { number: "2+", label: "Years Experience" },
-                { number: "50+", label: "Projects Done" },
-                { number: "100%", label: "Client Satisfaction" }
-              ].map((stat, index) => (
-                <div 
-                  key={stat.label}
-                  className={cn(
-                    "text-center transform transition-all duration-500",
-                    isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-                  )}
-                  style={{ transitionDelay: `${800 + index * 100}ms` }}
-                >
-                  <div className="text-2xl md:text-3xl font-bold text-primary">{stat.number}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground font-medium mt-1">{stat.label}</div>
+                  {/* Skills */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {['React', 'TypeScript', 'Node.js', 'UI/UX'].map((skill) => (
+                      <div key={skill} className="px-3 py-2 bg-background/50 rounded-lg text-center text-sm font-medium border border-border">
+                        {skill}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Current Project */}
+                  <div className="space-y-3">
+                    <div className="text-sm font-semibold">Currently Working On</div>
+                    <div className="p-4 bg-background/50 rounded-xl border border-border">
+                      <div className="font-medium">E-commerce Platform</div>
+                      <div className="text-xs text-muted-foreground mt-1">Next.js + Stripe + Tailwind</div>
+                      <div className="w-full bg-border rounded-full h-2 mt-3">
+                        <div className="bg-primary rounded-full h-2 w-3/4" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Background Decorative Elements */}
+              <div className="absolute -z-10 top-8 -right-8 w-32 h-32 bg-primary/10 rounded-3xl rotate-45" />
+              <div className="absolute -z-10 bottom-8 -left-8 w-24 h-24 bg-blue-500/10 rounded-3xl -rotate-45" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Enhanced Scroll Indicator */}
+      {/* Scroll Indicator */}
       <button 
         onClick={() => scrollToSection("about")}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 group animate-bounce hover:animate-none transition-transform duration-300 hover:scale-110"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group animate-bounce"
         aria-label="Scroll to next section"
       >
-        <div className="flex flex-col items-center gap-1">
-          <div className="w-[2px] h-12 bg-gradient-to-b from-primary/50 via-primary to-transparent group-hover:from-primary group-hover:via-primary" />
-          <ChevronDown className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+        <div className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-foreground/50 rounded-full mt-2 group-hover:bg-foreground transition-colors" />
         </div>
+        <span className="text-xs text-muted-foreground font-medium">Scroll</span>
       </button>
     </section>
   );
