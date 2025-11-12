@@ -1,6 +1,5 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
 import Statistics from "@/components/Statistics";
 import Services from "@/components/Services";
 import Skills from "@/components/Skills";
@@ -20,7 +19,6 @@ const Index = () => {
     <main className="min-h-screen pb-16 md:pb-0">
       <Navigation />
       <Hero />
-      <About />
       <Statistics />
       <Services />
       <Skills />
