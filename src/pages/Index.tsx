@@ -3,9 +3,6 @@ import Hero from "@/components/Hero";
 import Statistics from "@/components/Statistics";
 import Services from "@/components/Services";
 import Skills from "@/components/Skills";
-import SkillProgress from "@/components/SkillProgress";
-import TechStack from "@/components/TechStack";
-import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Achievements from "@/components/Achievements";
 import Testimonials from "@/components/Testimonials";
@@ -22,9 +19,6 @@ const Index = () => {
       <Statistics />
       <Services />
       <Skills />
-      <SkillProgress />
-      <TechStack />
-      <Experience />
       <Projects />
       <Achievements />
       <Testimonials />

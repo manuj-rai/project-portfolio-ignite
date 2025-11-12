@@ -87,52 +87,44 @@ const Services = () => {
 
 
   return (
-    <section id="services" ref={sectionRef} className="py-20 bg-background">
-      <div className="container px-4">
+    <section id="services" ref={sectionRef} className="py-12 md:py-20 bg-background">
+      <div className="container px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Services I Offer</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">Services I Offer</h2>
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Comprehensive development solutions tailored to your business needs
             </p>
           </div>
 
-          {/* Mobile Carousel */}
-          <div className="md:hidden">
-            <Carousel className="w-full max-w-xs mx-auto">
-              <CarouselContent>
-                {services.map((service) => {
-                  const Icon = getIcon(service.icon);
-                  return (
-                    <CarouselItem key={service.id}>
-                      <Card className="p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group h-full">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                          <Icon className="h-6 w-6 text-primary-foreground" />
-                        </div>
-                        
-                        <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                        <p className="text-muted-foreground mb-4">{service.description}</p>
-                        
-                        <ul className="space-y-2">
-                          {service.features.map((feature) => (
-                            <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2">
-                              <span className="text-primary mt-1">•</span>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </Card>
-                    </CarouselItem>
-                  );
-                })}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+          {/* Mobile Stack */}
+          <div className="md:hidden space-y-6">
+            {services.map((service) => {
+              const Icon = getIcon(service.icon);
+              return (
+                <Card key={service.id} className="p-6 bg-card/50 backdrop-blur border-border hover:border-primary/50 transition-all duration-300 group">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Icon className="h-7 w-7 text-primary-foreground" />
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                  <p className="text-muted-foreground mb-4 leading-relaxed">{service.description}</p>
+                  
+                  <ul className="space-y-2.5">
+                    {service.features.map((feature) => (
+                      <li key={feature} className="text-sm text-muted-foreground flex items-start gap-2.5">
+                        <span className="text-primary mt-0.5 text-lg">•</span>
+                        <span className="flex-1">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              );
+            })}
           </div>
 
-          {/* Desktop Grid */}
-          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Tablet/Desktop Grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {services.map((service, index) => {
               const Icon = getIcon(service.icon);
               return (
