@@ -15,93 +15,93 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       {/* Modern Geometric Background */}
       <div className="absolute inset-0">
         {/* Primary Gradient Blobs */}
         <div className="absolute top-1/4 -left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
+        <div className="absolute bottom-1/4 -right-10 w-96 h-96 bg-accent/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }} />
         
         {/* Grid Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_95%,hsl(var(--border)/0.03)_95%),linear-gradient(to_bottom,transparent_95%,hsl(var(--border)/0.03)_95%)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,black_30%,transparent_100%)]" />
       </div>
 
       {/* Main Content */}
-      <div className="container relative z-10 px-6 py-20">
+      <div className="container relative z-10 px-4 md:px-6 py-16 md:py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Text Content */}
             <div className={cn(
-              "space-y-8 transition-all duration-700",
+              "space-y-6 md:space-y-8 transition-all duration-700",
               isVisible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
             )}>
               {/* Badge */}
-              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-background/80 backdrop-blur-md border border-border shadow-lg">
+              <div className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 rounded-2xl bg-background/80 backdrop-blur-md border border-border shadow-lg">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-sm font-semibold text-foreground">
+                <span className="text-xs md:text-sm font-semibold text-foreground">
                   Available for new projects
                 </span>
               </div>
 
               {/* Main Headline */}
-              <div className="space-y-6">
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-none">
+              <div className="space-y-4 md:space-y-6">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
                   <span className="block text-foreground">Creating</span>
-                  <span className="block bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                  <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     Digital
                   </span>
                   <span className="block text-foreground">Experiences</span>
                 </h1>
                 
-                <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-lg">
                   I design and build modern web applications with focus on performance, 
                   accessibility, and beautiful user interfaces.
                 </p>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8">
+              <div className="flex gap-6 md:gap-8">
                 {[
                   { value: "2+", label: "Years" },
                   { value: "50+", label: "Projects" },
                   { value: "100%", label: "Satisfaction" }
-                ].map((stat, index) => (
+                ].map((stat) => (
                   <div key={stat.label} className="text-center">
-                    <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
+                    <div className="text-xl md:text-2xl font-bold text-primary">{stat.value}</div>
+                    <div className="text-xs md:text-sm text-muted-foreground font-medium">{stat.label}</div>
                   </div>
                 ))}
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 pt-2 md:pt-4">
                 <Button 
                   size="lg"
-                  className="group relative bg-foreground text-background hover:bg-foreground/90 px-8 py-6 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="group relative bg-foreground text-background hover:bg-foreground/90 px-6 md:px-8 py-5 md:py-6 text-base md:text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 touch-target"
                   onClick={() => scrollToSection("contact")}
                 >
-                  <span className="flex items-center gap-3">
+                  <span className="flex items-center justify-center gap-2 md:gap-3">
                     Start a Project
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Button>
                 
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="px-8 py-6 text-lg font-semibold rounded-2xl border-2 bg-background/50 backdrop-blur-sm hover:bg-accent hover:scale-105 transition-all duration-300"
+                  className="px-6 md:px-8 py-5 md:py-6 text-base md:text-lg font-semibold rounded-2xl border-2 bg-background/50 backdrop-blur-sm hover:bg-accent hover:scale-105 active:scale-95 transition-all duration-300 touch-target"
                   onClick={() => scrollToSection("projects")}
                 >
-                  <span className="flex items-center gap-3">
+                  <span className="flex items-center justify-center gap-2 md:gap-3">
                     View Work
-                    <Play className="w-4 h-4" />
+                    <Play className="w-3 h-3 md:w-4 md:h-4" />
                   </span>
                 </Button>
               </div>
 
               {/* Social Links */}
-              <div className="flex gap-4 pt-6">
+              <div className="flex gap-3 md:gap-4 pt-4 md:pt-6">
                 {[
                   { icon: Github, href: "https://github.com", label: "GitHub" },
                   { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
@@ -113,21 +113,21 @@ const Hero = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "w-14 h-14 rounded-2xl border border-border bg-background/60 backdrop-blur-sm hover:bg-primary/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-primary shadow-sm",
+                      "w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-border bg-background/60 backdrop-blur-sm hover:bg-primary/10 active:bg-primary/20 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:border-primary shadow-sm touch-target",
                       "transform transition-all duration-500"
                     )}
                     style={{ animationDelay: `${600 + index * 100}ms` }}
                     aria-label={social.label}
                   >
-                    <social.icon className="w-6 h-6" />
+                    <social.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </a>
                 ))}
               </div>
             </div>
 
-            {/* Visual Content */}
+            {/* Visual Content - Hidden on mobile */}
             <div className={cn(
-              "relative transition-all duration-700",
+              "hidden lg:block relative transition-all duration-700",
               isVisible ? "translate-x-0 opacity-100" : "translate-x-10 opacity-0"
             )}>
               {/* Main Card */}
@@ -178,10 +178,10 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Hidden on mobile */}
       <button 
-        onClick={() => scrollToSection("about")}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group animate-bounce"
+        onClick={() => scrollToSection("services")}
+        className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 group animate-bounce touch-target"
         aria-label="Scroll to next section"
       >
         <div className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center">
